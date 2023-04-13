@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+   {{template "general/header"}}
+</head>
+<body>
+    <div class="flex flex-col w-screen text-white h-screen overflow-auto bg-zinc-800">
+        <div class="flex items-center flex-shrink-0 w-full h-24 px-10 bg-zinc-900">
+            <svg class="w-8 h-8 text-indigo-500 stroke-current" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />
+            </svg>
+            <div class="flex items-center justify-center w-8 h-8 ml-auto">
+                <a href="/logout">
+                    <buton class="flex items-center justify-center w-8 h-8 ml-auto cursor-pointer font-bold">
+                        Logout
+                    </buton>
+                </a>
+            </div>
+        </div>
+        <div class="flex justify-between ">
+            <div class="px-10 mt-6">
+                <h1 class="text-2xl font-bold">Kanban App</h1>
+            </div>
+            <div class="px-10 mt-6">
+                <div>
+                    <a href="/category/add" method="GET" >
+                        <button class="uppercase p-3 rounded-full bg-indigo-500 hover:bg-indigo-600 focus:outline-none">add Category</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- TODO: answer here -->
+        
+        <div class="flex flex-grow px-10 mt-4 space-x-6 overflow-auto">
+            {{range $elem := .categories}}
+            <div class="flex flex-col flex-shrink-0 w-72 mb-10">
+                <div class="bg-neutral-900 rounded-md">
+                    <div class="flex justify-between items-center flex-shrink-0 h-10 p-4">
+                        <span class="font-sm text-white">{{ .Type }}</span>
+                        <div class="flex flex-between pt-2">
+                            <a href="/task/add?category={{ .ID }}" class="">
+                                <button>
+                                    <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                                    </svg>
+                                </button>
+                            </a>
+    
+                            <a href="/category/delete?category_id={{ .ID }}">
+                                <button>
+                                    <svg class="w-5 h-5" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <path d="M6.2253 4.81108C5.83477 4.42056 5.20161 4.42056 4.81108 4.81108C4.42056 5.20161 4.42056 5.83477 4.81108 6.2253L10.5858 12L4.81114 17.7747C4.42062 18.1652 4.42062 18.7984 4.81114 19.1889C5.20167 19.5794 5.83483 19.5794 6.22535 19.1889L12 13.4142L17.7747 19.1889C18.1652 19.5794 18.7984 19.5794 19.1889 19.1889C19.5794 18.7984 19.5794 18.1652 19.1889 17.7747L13.4142 12L19.189 6.2253C19.5795 5.83477 19.5795 5.20161 19.189 4.81108C18.7985 4.42056 18.1653 4.42056 17.7748 4.81108L12 10.5858L6.2253 4.81108Z" fill="currentColor"></path>
+                                    </svg>
+                                </button>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    {{range $task := .Tasks}}
+                    <div class="pb-4">
+                        <a href="/task/update?task_id={{ $task.ID }}">
+                        </a>
+                        <div class="relative flex justify-between flex-col p-4 mt-3 bg-black mx-4 rounded-lg cursor-pointer bg-opacity-90 group hover:bg-opacity-100" draggable="true">
+                            <a href="/task/update?task_id={{ $task.ID }}">
+                                <form method="POST" action="/task/delete?task_id={{ $task.ID }}">
+                                    <button class="absolute top-0 right-0 flex items-center justify-center hidden w-5 h-5 mt-3 mr-4 text-gray-500 rounded hover:bg-slate-600 hover:text-gray-700 group-hover:flex">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
+                                            <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6z"></path>
+                                            <path fill-rule="evenodd" d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1zM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118zM2.5 3V2h11v1h-11z"></path>
+                                        </svg>
+                                    </button>
+                                </form>
+                                <h2 class="text-lg font-medium">{{ $task.Title }}</h2>
+                                <h4 class="mt-3 text-sm font-medium">{{ $task.Description }}</h4>
+                            </a>
+                            <div class="flex justify-between">
+                                <a href="/task/update/process?task_id={{ .ID }}&amp;category_id={{ categoryDec .CategoryID }}">
+                                    <button class="flex items-center justify-center hidden w-5 h-5 mt-3 mr-2 text-gray-500 hover:bg-slate-600 hover:rounded hover:py-2 group-hover:flex">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24"/>
+                                                    <path d="M5.29288961,6.70710318 C4.90236532,6.31657888 4.90236532,5.68341391 5.29288961,5.29288961 C5.68341391,4.90236532 6.31657888,4.90236532 6.70710318,5.29288961 L12.7071032,11.2928896 C13.0856821,11.6714686 13.0989277,12.281055 12.7371505,12.675721 L7.23715054,18.675721 C6.86395813,19.08284 6.23139076,19.1103429 5.82427177,18.7371505 C5.41715278,18.3639581 5.38964985,17.7313908 5.76284226,17.3242718 L10.6158586,12.0300721 L5.29288961,6.70710318 Z" fill="white" fill-rule="nonzero" transform="translate(8.999997, 11.999999) scale(-1, 1) translate(-8.999997, -11.999999) "/>
+                                                    <path d="M10.7071009,15.7071068 C10.3165766,16.0976311 9.68341162,16.0976311 9.29288733,15.7071068 C8.90236304,15.3165825 8.90236304,14.6834175 9.29288733,14.2928932 L15.2928873,8.29289322 C15.6714663,7.91431428 16.2810527,7.90106866 16.6757187,8.26284586 L22.6757187,13.7628459 C23.0828377,14.1360383 23.1103407,14.7686056 22.7371482,15.1757246 C22.3639558,15.5828436 21.7313885,15.6103465 21.3242695,15.2371541 L16.0300699,10.3841378 L10.7071009,15.7071068 Z" fill="white" fill-rule="nonzero" opacity="0.3" transform="translate(15.999997, 11.999999) scale(-1, 1) rotate(-270.000000) translate(-15.999997, -11.999999) "/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </a>
+                                <a href="/task/update/process?task_id={{ .ID }}&amp;category_id={{ categoryInc .CategoryID }}">
+                                    <button class="flex items-center justify-center hidden w-5 h-5 mt-3 text-gray-500 rounded hover:bg-slate-600 hover:rounded hover:py-2 group-hover:flex">
+                                        <span class="svg-icon svg-icon-primary svg-icon-2x">
+                                            <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="24px" height="24px" viewBox="0 0 24 24" version="1.1">
+                                                <g stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+                                                    <polygon points="0 0 24 0 24 24 0 24"/>
+                                                    <path d="M12.2928955,6.70710318 C11.9023712,6.31657888 11.9023712,5.68341391 12.2928955,5.29288961 C12.6834198,4.90236532 13.3165848,4.90236532 13.7071091,5.29288961 L19.7071091,11.2928896 C20.085688,11.6714686 20.0989336,12.281055 19.7371564,12.675721 L14.2371564,18.675721 C13.863964,19.08284 13.2313966,19.1103429 12.8242777,18.7371505 C12.4171587,18.3639581 12.3896557,17.7313908 12.7628481,17.3242718 L17.6158645,12.0300721 L12.2928955,6.70710318 Z" fill="white" fill-rule="nonzero"/>
+                                                    <path d="M3.70710678,15.7071068 C3.31658249,16.0976311 2.68341751,16.0976311 2.29289322,15.7071068 C1.90236893,15.3165825 1.90236893,14.6834175 2.29289322,14.2928932 L8.29289322,8.29289322 C8.67147216,7.91431428 9.28105859,7.90106866 9.67572463,8.26284586 L15.6757246,13.7628459 C16.0828436,14.1360383 16.1103465,14.7686056 15.7371541,15.1757246 C15.3639617,15.5828436 14.7313944,15.6103465 14.3242754,15.2371541 L9.03007575,10.3841378 L3.70710678,15.7071068 Z" fill="white" fill-rule="nonzero" opacity="0.3" transform="translate(9.000003, 11.999999) rotate(-270.000000) translate(-9.000003, -11.999999) "/>
+                                                </g>
+                                            </svg>
+                                        </span>
+                                    </button>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {{end}}
+                </div>
+            </div>
+            {{end}}
+        </div>
+    </div>
+</body>
+</html>
