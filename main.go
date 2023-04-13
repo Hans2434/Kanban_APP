@@ -39,7 +39,8 @@ func FlyURL() string {
 }
 
 func main() {
-	os.Setenv("DATABASE_URL", "postgres://postgres:wdf09kkj12sde@localhost:5432/test_db_camp")
+	// change to your db configguration
+	os.Setenv("DATABASE_URL", "postgres://postgres:posgress@localhost:5432/posgress")
 
 	wg := sync.WaitGroup{}
 
